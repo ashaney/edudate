@@ -18,6 +18,7 @@ function quiz:init()
 		selected = 1,
 		slectedBoxMargin = 8
 	}
+	self.table = null;
 	self:initializeQuestions()
 end
 
