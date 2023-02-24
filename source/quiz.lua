@@ -2,6 +2,8 @@ import "CoreLibs/graphics"
 import "CoreLibs/object"
 
 local gfx <const> = playdate.graphics
+local questionNumber = 1
+local selected = 1
 
 class("quiz").extends()
 
@@ -20,6 +22,28 @@ function quiz:init()
 		score = 0
 	}
 	self.table = null;
+	local myInputHandlers = {
+		upButtonUp = function()
+			selected = selected - 1
+		end,
+	
+		downButtonUp = function()
+			selected = selected + 1
+		end,
+		rightButtonUp = function()
+			if questionNumber < 4 then
+				questionNumber = questionNumber + 1
+			end
+		end,
+		leftButtonUp = function()
+			if questionNumber > 1 then
+				questionNumber = questionNumber - 1
+			end
+		end		
+	}	
+	playdate.inputHandlers.push(myInputHandlers)
+
+
 	self:initializeQuestions()
 	
 end
@@ -28,7 +52,7 @@ function quiz:update()
     
 end
 
-function quiz:draw(selected, questionNumber)
+function quiz:draw()
 	self.quiz.selected = selected
     local quizParts = self.quiz;
 	local text = self.table["questions"][tostring(questionNumber)]["text"]
