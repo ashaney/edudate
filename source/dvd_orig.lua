@@ -1,5 +1,6 @@
 import "CoreLibs/graphics"
 import "CoreLibs/object"
+import "dkjson"
 
 local gfx <const> = playdate.graphics
 
