@@ -41,18 +41,14 @@ function quiz:init()
 			end
 		end		
 	}	
-	playdate.inputHandlers.push(myInputHandlers)
-
-
-	self:initializeQuestions()
-	
+	playdate.inputHandlers.push(myInputHandlers)	
 end
 
-function quiz:update()
-    
+function quiz:update()    
 end
 
-function quiz:draw()
+function quiz:draw(quizSelected)
+	self:initializeQuestions(quizSelected)
 	self.quiz.selected = selected
     local quizParts = self.quiz;
 	local text = self.table["questions"][tostring(questionNumber)]["text"]
@@ -90,8 +86,8 @@ function quiz:drawSelection()
 	gfx.drawRect(rect.x, rect.y, rect.width, rect.height);
 end
 
-function quiz:initializeQuestions()	
-	self.table = playdate.datastore.read("json\\math1")
+function quiz:initializeQuestions(quizSelected)	
+	self.table = playdate.datastore.read("json\\"..quizSelected)
 	print(self.table["questions"]["1"]["text"])
 end
 
