@@ -6,7 +6,7 @@ local quizSelect = quizSelect(1, -1)
 local gfx <const> = playdate.graphics
 local font = gfx.font.new('font/Mini Sans 2X')
 
-local quizSelected = null;
+local quizSelected = null; 
 
 
 local function loadGame()
