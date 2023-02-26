@@ -1,14 +1,61 @@
 import "CoreLibs/graphics"
 import "CoreLibs/object"
 
+
 local gfx <const> = playdate.graphics
 local questionNumber = 1
 local selected = 1
 
-class("quiz").extends()
+local table = null
 
-function quiz:init()
-    self.quiz = {
+local questionInitialized = 0
+
+class("quiz").extends(gfx.sprite)
+
+function quiz:init(quizSelected)
+    
+	self.table = null;
+	local myInputHandlers = {
+		upButtonUp = function()
+			selected = selected - 1
+			quiz:refresh()
+		end,
+	
+		downButtonUp = function()
+			selected = selected + 1
+			quiz:refresh()
+		end,
+		rightButtonUp = function()
+			if questionNumber < 4 then
+				questionNumber = questionNumber + 1
+			end
+			quiz:refresh()
+		end,
+		leftButtonUp = function()
+			if questionNumber > 1 then
+				questionNumber = questionNumber - 1
+			end
+			quiz:refresh()
+		end		
+	}	
+	playdate.inputHandlers.push(myInputHandlers)
+	self:initializeQuestions(quizSelected)
+	quiz:refresh()
+end
+
+function quiz:refresh()
+	gfx.clear()
+	quiz:draw()
+	quiz:drawSelection()  
+	self:drawScore();
+end
+
+function quiz:update()
+
+end
+
+function quiz:draw(quizSelected)
+	self.quiz = {
 		questionx = 25,
 		questiony = 25,
 		answer1x = 50,
@@ -19,53 +66,23 @@ function quiz:init()
 		height =20,
 		selected = 1,
 		slectedBoxMargin = 8,
-		score = 0
+		score = 0,
+		questionsInitialized = 0
 	}
-	self.table = null;
-	local myInputHandlers = {
-		upButtonUp = function()
-			selected = selected - 1
-		end,
-	
-		downButtonUp = function()
-			selected = selected + 1
-		end,
-		rightButtonUp = function()
-			if questionNumber < 4 then
-				questionNumber = questionNumber + 1
-			end
-		end,
-		leftButtonUp = function()
-			if questionNumber > 1 then
-				questionNumber = questionNumber - 1
-			end
-		end		
-	}	
-	playdate.inputHandlers.push(myInputHandlers)
-
-
-	self:initializeQuestions()
-	
-end
-
-function quiz:update()
-    
-end
-
-function quiz:draw()
-	self.quiz.selected = selected
+	--if self.quiz.questionsInitialized == 0 then
+	--	self:initializeQuestions(quizSelected)
+	--	self.quiz.questionsInitialized = 1
+	--end	
     local quizParts = self.quiz;
-	local text = self.table["questions"][tostring(questionNumber)]["text"]
-	local option1 = self.table["questions"][tostring(questionNumber)]["option1"]
-	local option2 = self.table["questions"][tostring(questionNumber)]["option2"]
-	local option3 = self.table["questions"][tostring(questionNumber)]["option3"]
+	local text = table["questions"][tostring(questionNumber)]["text"]
+	local option1 = table["questions"][tostring(questionNumber)]["option1"]
+	local option2 = table["questions"][tostring(questionNumber)]["option2"]
+	local option3 = table["questions"][tostring(questionNumber)]["option3"]
 
     gfx.drawTextInRect(text, quizParts.questionx, quizParts.questiony, quizParts.width, quizParts.height)
 	gfx.drawTextInRect(tostring(option1), quizParts.answer1x,quizParts.answer1y, quizParts.width, quizParts.height)
 	gfx.drawTextInRect(tostring(option2), quizParts.answer1x,quizParts.answer2y, quizParts.width, quizParts.height)
 	gfx.drawTextInRect(tostring(option3), quizParts.answer1x,quizParts.answer3y, quizParts.width, quizParts.height)
-	self:drawSelection();
-	self:drawScore();
 	--gfx.drawRect(48, 199, 302, 22);
 end
 
@@ -77,22 +94,22 @@ function quiz:drawSelection()
 		height= 28
 	}
 	local rect = self.rect;
-	if self.quiz.selected == 1 then
+	if selected == 1 then
 		rect.y = self.quiz.answer1y-self.quiz.slectedBoxMargin
 	end
-	if self.quiz.selected == 2 then
+	if selected == 2 then
 		print("answer 2");
 		rect.y = self.quiz.answer2y-self.quiz.slectedBoxMargin
 	end
-	if self.quiz.selected == 3 then
+	if selected == 3 then
 		rect.y = self.quiz.answer3y-self.quiz.slectedBoxMargin
 	end
 	gfx.drawRect(rect.x, rect.y, rect.width, rect.height);
 end
 
-function quiz:initializeQuestions()	
-	self.table = playdate.datastore.read("json\\math1")
-	print(self.table["questions"]["1"]["text"])
+function quiz:initializeQuestions(quizSelected)	
+	table = playdate.datastore.read("json\\"..quizSelected)
+	print(table["questions"]["1"]["text"])
 end
 
 function quiz:drawScore()
