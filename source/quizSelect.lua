@@ -38,7 +38,7 @@ end
 
 function quizSelect:refresh()
 	gfx.clear()
-	quizSelect:drawQuestions()
+	quizSelect:drawList()
 	quizSelect:drawSelection()
 end
 
@@ -66,7 +66,7 @@ function quizSelect:drawSelection()
 	gfx.drawRect(rect.x, rect.y, rect.width, rect.height);
 end
 
-function quizSelect:drawQuestions()
+function quizSelect:drawList()
 	self.quiz = {
         x =25,
         y= 25,

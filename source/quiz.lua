@@ -7,8 +7,7 @@ local questionNumber = 1
 local selected = 1
 
 local table = null
-
-local questionInitialized = 0
+local score = 0
 
 class("quiz").extends(gfx.sprite)
 
@@ -36,7 +35,11 @@ function quiz:init(quizSelected)
 				questionNumber = questionNumber - 1
 			end
 			quiz:refresh()
-		end		
+		end		,
+		BButtonUp = function()
+			score = score + 1
+			quiz:refresh()
+		end,
 	}	
 	playdate.inputHandlers.push(myInputHandlers)
 	self:initializeQuestions(quizSelected)
@@ -47,7 +50,7 @@ function quiz:refresh()
 	gfx.clear()
 	quiz:draw()
 	quiz:drawSelection()  
-	self:drawScore();
+	quiz:drawScore();
 end
 
 function quiz:update()
@@ -64,9 +67,7 @@ function quiz:draw(quizSelected)
 		answer3y =175,
 		width =300,
 		height =20,
-		selected = 1,
 		slectedBoxMargin = 8,
-		score = 0,
 		questionsInitialized = 0
 	}
 	--if self.quiz.questionsInitialized == 0 then
@@ -113,5 +114,5 @@ function quiz:initializeQuestions(quizSelected)
 end
 
 function quiz:drawScore()
-	gfx.drawTextInRect("Score: " .. tostring(self.quiz.score), 300, 10, 200, 20)
+	gfx.drawTextInRect("Score: " .. tostring(score), 300, 10, 200, 20)
 end
