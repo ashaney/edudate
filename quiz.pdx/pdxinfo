@@ -5,4 +5,8 @@ bundleID=com.organization.package
 version=0.0.1
 buildNumber=1
 pdxversion=11300
+<<<<<<< HEAD
 buildtime=731114843
+=======
+buildtime=730764687
+>>>>>>> 7415363 (B button goes back)
