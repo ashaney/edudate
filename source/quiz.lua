@@ -1,6 +1,6 @@
 import "CoreLibs/graphics"
 import "CoreLibs/object"
-
+import "quizSelect"
 
 local gfx <const> = playdate.graphics
 local questionNumber = 1
@@ -8,6 +8,9 @@ local selected = 1
 
 local table = null
 local score = 0
+local numberOfOptions = 3
+local numberOfQuestions = 0
+local isShowingScore = false
 
 class("quiz").extends(gfx.sprite)
 
@@ -16,30 +19,40 @@ function quiz:init(quizSelected)
 	self.table = null;
 	local myInputHandlers = {
 		upButtonUp = function()
-			selected = selected - 1
-			quiz:refresh()
-		end,
-	
+			if selected > 1 then
+				selected = selected - 1
+				quiz:refresh()
+			end
+		end,	
 		downButtonUp = function()
-			selected = selected + 1
-			quiz:refresh()
-		end,
-		rightButtonUp = function()
-			if questionNumber < 4 then
-				questionNumber = questionNumber + 1
+			if selected < numberOfOptions then
+				selected = selected + 1
+				quiz:refresh()
 			end
-			quiz:refresh()
 		end,
-		leftButtonUp = function()
-			if questionNumber > 1 then
-				questionNumber = questionNumber - 1
-			end
-			quiz:refresh()
-		end		,
+		-- rightButtonUp = function()
+		-- 	if questionNumber < 4 then
+		-- 		questionNumber = questionNumber + 1
+		-- 	end
+		-- 	quiz:refresh()
+		-- end,
+		-- leftButtonUp = function()
+		-- 	if questionNumber > 1 then
+		-- 		questionNumber = questionNumber - 1
+		-- 	end
+		-- 	quiz:refresh()
+		-- end		,
+		
 		BButtonUp = function()
-			score = score + 1
-			quiz:refresh()
+			quizSelect()
 		end,
+		AButtonUp = function ()
+			if isShowingScore then
+				quizSelect()
+			else
+				quiz:checkAnswer()
+			end
+		end
 	}	
 	playdate.inputHandlers.push(myInputHandlers)
 	self:initializeQuestions(quizSelected)
@@ -109,10 +122,39 @@ function quiz:drawSelection()
 end
 
 function quiz:initializeQuestions(quizSelected)	
+	isShowingScore = false
+	score = 0
+	selected = 1
+	questionNumber = 1
 	table = playdate.datastore.read("json\\"..quizSelected)
-	print(table["questions"]["1"]["text"])
+	numberOfQuestions = self:getTableSize(table["questions"])
 end
 
 function quiz:drawScore()
 	gfx.drawTextInRect("Score: " .. tostring(score), 300, 10, 200, 20)
+end
+
+function quiz:checkAnswer()
+	if selected == table["questions"][tostring(questionNumber)]["correct"] then
+		score = score + 1
+	end
+	if numberOfQuestions > questionNumber then
+		questionNumber = questionNumber + 1
+		selected = 1
+		quiz:refresh()
+	else
+		gfx.clear()
+		gfx.drawTextInRect("Your score is : ", 50, 50,250, 20)
+		gfx.drawTextInRect(tostring(score), 100, 100,300, 80)
+		isShowingScore = true
+	end
+	
+end
+
+function quiz:getTableSize(t)
+    local count = 0
+    for _, __ in pairs(t) do
+        count = count + 1
+    end
+    return count
 end

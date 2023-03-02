@@ -6,22 +6,25 @@ local gfx <const> = playdate.graphics
 
 local quizSelected = null
 local selected = 1
-quiz = quiz
+local numberOfOptions = 2
+-- quiz = quiz
 class("quizSelect").extends()
 
 function quizSelect:init()    
 	--self.table = null; read in list of possible json files later
 	local myInputHandlers = {
 		upButtonUp = function()
-			selected = selected - 1
-            print(tostring(selected))
-			quizSelect:refresh()
+			if selected > 1 then
+				selected = selected - 1
+				quizSelect:refresh()
+			end
 		end,
 	
 		downButtonUp = function()
-			selected = selected + 1
-            print(tostring(selected))
-			quizSelect:refresh()
+			if selected < numberOfOptions then
+				selected = selected + 1
+				quizSelect:refresh()
+			end
 		end,
         AButtonUp = function ()
             self:makeSelection()
