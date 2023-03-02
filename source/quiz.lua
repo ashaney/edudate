@@ -1,12 +1,15 @@
 import "CoreLibs/graphics"
 import "CoreLibs/object"
 
+import "quizSelect"
 
+local pd <const> = playdate
 local gfx <const> = playdate.graphics
 local questionNumber = 1
 local selected = 1
 
 local table = null
+local score = 0
 
 local questionInitialized = 0
 
@@ -36,7 +39,17 @@ function quiz:init(quizSelected)
 				questionNumber = questionNumber - 1
 			end
 			quiz:refresh()
-		end		
+		end	,
+		AButtonUp = function()
+			score += 1
+			print(score)
+			quiz:refresh()
+		end,
+		BButtonUp = function()
+			print("Back to main screen")
+			gfx.clear()
+			quizSelect()
+		end
 	}	
 	playdate.inputHandlers.push(myInputHandlers)
 	self:initializeQuestions(quizSelected)
@@ -64,9 +77,7 @@ function quiz:draw(quizSelected)
 		answer3y =175,
 		width =300,
 		height =20,
-		selected = 1,
-		slectedBoxMargin = 8,
-		score = 0,
+		selectedBoxMargin = 8,
 		questionsInitialized = 0
 	}
 	--if self.quiz.questionsInitialized == 0 then
@@ -95,14 +106,14 @@ function quiz:drawSelection()
 	}
 	local rect = self.rect;
 	if selected == 1 then
-		rect.y = self.quiz.answer1y-self.quiz.slectedBoxMargin
+		rect.y = self.quiz.answer1y-self.quiz.selectedBoxMargin
 	end
 	if selected == 2 then
 		print("answer 2");
-		rect.y = self.quiz.answer2y-self.quiz.slectedBoxMargin
+		rect.y = self.quiz.answer2y-self.quiz.selectedBoxMargin
 	end
 	if selected == 3 then
-		rect.y = self.quiz.answer3y-self.quiz.slectedBoxMargin
+		rect.y = self.quiz.answer3y-self.quiz.selectedBoxMargin
 	end
 	gfx.drawRect(rect.x, rect.y, rect.width, rect.height);
 end
@@ -113,5 +124,5 @@ function quiz:initializeQuestions(quizSelected)
 end
 
 function quiz:drawScore()
-	gfx.drawTextInRect("Score: " .. tostring(self.quiz.score), 300, 10, 200, 20)
+	gfx.drawTextInRect("Score: " .. score, 300, 10, 200, 20)
 end
