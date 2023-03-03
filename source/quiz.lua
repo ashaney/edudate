@@ -83,7 +83,7 @@ function quiz:draw(quizSelected)
 		answer3y =175,
 		width =300,
 		height =20,
-		slectedBoxMargin = 8,
+		selectedBoxMargin = 8,
 		questionsInitialized = 0
 	}
 	--if self.quiz.questionsInitialized == 0 then
@@ -112,14 +112,14 @@ function quiz:drawSelection()
 	}
 	local rect = self.rect;
 	if selected == 1 then
-		rect.y = self.quiz.answer1y-self.quiz.slectedBoxMargin
+		rect.y = self.quiz.answer1y-self.quiz.selectedBoxMargin
 	end
 	if selected == 2 then
 		print("answer 2");
-		rect.y = self.quiz.answer2y-self.quiz.slectedBoxMargin
+		rect.y = self.quiz.answer2y-self.quiz.selectedBoxMargin
 	end
 	if selected == 3 then
-		rect.y = self.quiz.answer3y-self.quiz.slectedBoxMargin
+		rect.y = self.quiz.answer3y-self.quiz.selectedBoxMargin
 	end
 	gfx.drawRect(rect.x, rect.y, rect.width, rect.height);
 end
