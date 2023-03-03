@@ -130,6 +130,7 @@ function quiz:initializeQuestions(quizSelected)
 	selected = 1
 	questionNumber = 1
 	table = playdate.datastore.read(quizSelected)
+	-- the debugger asks you to check if the table is null but we don't
 	numberOfQuestions = self:getTableSize(table["questions"])
 end
 
