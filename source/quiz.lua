@@ -146,12 +146,11 @@ function quiz:checkAnswer()
 	else
 		percent = 100 * (score / numberOfQuestions)
         gfx.clear()
-		gfx.drawTextInRect("Your score is : ", 50, 50, 250, 20)
-		gfx.drawTextInRect(tostring(score), 100, 100, 300, 80)
+        gfx.drawTextInRect("Your score is:", 50, 50, 250, 20)
+        gfx.drawTextInRect(tostring(score).." out of "..tostring(numberOfQuestions), 75, 75, 250, 20)
 		gfx.drawTextInRect("That is a ", 50, 150, 250, 20)
 		percent = math.floor(percent)
-        gfx.drawTextInRect(tostring(percent), 165, 150, 250, 20)
-		gfx.drawTextInRect("%!", 205, 150, 250, 20)
+        gfx.drawTextInRect(tostring(percent).."%", 165, 150, 250, 20)
 		isShowingScore = true
 	end
 	
