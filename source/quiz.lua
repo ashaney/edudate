@@ -11,6 +11,7 @@ local score = 0
 local numberOfOptions = 3
 local numberOfQuestions = 0
 local isShowingScore = false
+local percent = 0
 
 class("quiz").extends(gfx.sprite)
 
@@ -143,9 +144,14 @@ function quiz:checkAnswer()
 		selected = 1
 		quiz:refresh()
 	else
-		gfx.clear()
-		gfx.drawTextInRect("Your score is : ", 50, 50,250, 20)
-		gfx.drawTextInRect(tostring(score), 100, 100,300, 80)
+		percent = 100 * (score / numberOfQuestions)
+        gfx.clear()
+		gfx.drawTextInRect("Your score is : ", 50, 50, 250, 20)
+		gfx.drawTextInRect(tostring(score), 100, 100, 300, 80)
+		gfx.drawTextInRect("That is a ", 50, 150, 250, 20)
+		percent = math.floor(percent)
+        gfx.drawTextInRect(tostring(percent), 165, 150, 250, 20)
+		gfx.drawTextInRect("%!", 205, 150, 250, 20)
 		isShowingScore = true
 	end
 	
