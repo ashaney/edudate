@@ -129,7 +129,7 @@ function quiz:initializeQuestions(quizSelected)
 	score = 0
 	selected = 1
 	questionNumber = 1
-	table = playdate.datastore.read("json\\"..quizSelected)
+	table = playdate.datastore.read(quizSelected)
 	numberOfQuestions = self:getTableSize(table["questions"])
 end
 
