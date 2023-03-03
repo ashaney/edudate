@@ -124,11 +124,12 @@ function quiz:drawSelection()
 	gfx.drawRect(rect.x, rect.y, rect.width, rect.height);
 end
 
-function quiz:initializeQuestions(quizSelected)	
+function quiz:initializeQuestions(quizSelected)
 	isShowingScore = false
 	score = 0
 	selected = 1
 	questionNumber = 1
+	-- for now the json files are stored in the source directory
 	table = playdate.datastore.read(quizSelected)
 	-- the debugger asks you to check if the table is null but we don't
 	numberOfQuestions = self:getTableSize(table["questions"])
