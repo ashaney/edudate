@@ -1,5 +1,4 @@
 builds/*
 .vscode/*
 .pdx
-settings.json
-
+.vscode/settings.json
