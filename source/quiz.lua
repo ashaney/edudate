@@ -3,6 +3,7 @@ import "CoreLibs/object"
 import "quizSelect"
 
 local gfx <const> = playdate.graphics
+local snd = playdate.sound
 local questionNumber = 1
 local selected = 1
 
@@ -12,6 +13,7 @@ local numberOfOptions = 3
 local numberOfQuestions = 0
 local isShowingScore = false
 local percent = 0
+local s = snd.fileplayer.new("sounds/endsound")
 
 class("quiz").extends(gfx.sprite)
 
@@ -146,11 +148,17 @@ function quiz:checkAnswer()
 	else
 		percent = 100 * (score / numberOfQuestions)
         gfx.clear()
+		s:play()
         gfx.drawTextInRect("Your score is:", 50, 50, 250, 20)
         gfx.drawTextInRect(tostring(score).." out of "..tostring(numberOfQuestions), 75, 75, 250, 20)
 		gfx.drawTextInRect("That is a ", 50, 150, 250, 20)
 		percent = math.floor(percent)
-        gfx.drawTextInRect(tostring(percent).."%", 165, 150, 250, 20)
+        gfx.drawTextInRect(tostring(percent).."%!", 165, 150, 250, 20)
+		if percent >= 80 then
+			gfx.drawTextInRect("Good job!", 50, 200, 250, 20)
+		else
+			gfx.drawTextInRect("Better luck next time", 50, 200, 275, 20)
+		end
 		isShowingScore = true
 	end
 	
