@@ -6,5 +6,5 @@
   "Lua.workspace.library": ["$PLAYDATE_SDK_PATH/CoreLibs"],
   "Lua.workspace.preloadFileSize": 1000,
   "terminal.integrated.defaultProfile.windows": "PowerShell",
-  "playdate-debug.sdkPath": "C:\\Users\\treyw\\Documents\\PlaydateSDK"
+  "playdate-debug.sdkPath": "C:\\Users\\ashan\\Documents\\PlaydateSDK"
 }
